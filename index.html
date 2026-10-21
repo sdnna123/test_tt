@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f0f3f7">
+  <title>오늘 뭐 먹지? · Blion식탁</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="decor decor-one" aria-hidden="true">✿</div>
+  <div class="decor decor-two" aria-hidden="true">♡</div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="logo" href="#" aria-label="Blion식탁 홈">
+        <span class="logo-mark">B</span> Blion식탁
+      </a>
+      <div class="header-actions">
+        <span class="today-note"><span class="sparkle">✦</span> 오늘도 맛있는 하루</span>
+        <button class="contact-button" id="contactBtn" type="button">
+          문의 · 건의하기 <span>♡</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <span class="pill">TODAY’S MENU</span>
+      <h1>오늘은 <em>뭐 먹지?</em></h1>
+      <p>고민은 살짝 내려놓고, Blion식탁이 골라드릴게요.</p>
+    </section>
+
+    <section class="recommend-card" aria-labelledby="recommendTitle">
+      <div class="recommend-copy">
+        <div class="tiny-label"><span>✧</span> MENU PICKER</div>
+        <h2 id="recommendTitle">마음에 드는 메뉴가<br>떠오르지 않는다면</h2>
+        <p>버튼을 눌러 오늘의 메뉴를 골라보세요</p>
+      </div>
+      <div class="pick-stage">
+        <span class="pick-cloud cloud-a"></span>
+        <span class="pick-cloud cloud-b"></span>
+        <div id="pickResult" class="pick-result" aria-live="polite">
+          <span class="plate-icon">🍽️</span>
+          <span>두근두근…</span>
+        </div>
+        <button id="recommendBtn" class="pick-button">
+          <span>✦</span> 추천받기 <span>✦</span>
+        </button>
+      </div>
+      <span class="card-flower" aria-hidden="true">✿</span>
+    </section>
+
+    <div class="workspace">
+      <section class="menu-panel panel" aria-labelledby="menuHeading">
+        <div class="panel-heading">
+          <div>
+            <span class="section-kicker">OUR LITTLE MENU</span>
+            <h2 id="menuHeading">오늘의 메뉴 <span class="heading-emoji">🥣</span></h2>
+          </div>
+          <span class="count-badge" id="menuCount">7가지</span>
+        </div>
+
+        <form id="addMenuForm" class="add-form">
+          <label class="sr-only" for="newMenuName">새 메뉴 이름</label>
+          <input id="newMenuName" type="text" maxlength="30"
+                 placeholder="메뉴 이름" autocomplete="off">
+          <button type="submit">＋ 등록</button>
+        </form>
+
+        <p class="form-message" id="formMessage" aria-live="polite"></p>
+        <ul class="menu-list" id="menuList" aria-label="등록된 메뉴"></ul>
+        <p class="panel-footnote">
+          <span>♡</span> 메뉴를 관리하고 오늘의 추천을 받아보세요
+        </p>
+      </section>
+    </div>
+
+    <footer>
+      <span>made with <b>♥</b> and a little daydream</span>
+      <span class="footer-flower">✿　❀　✿</span>
+    </footer>
+  </main>
+
+  <div class="modal" id="contactModal" aria-hidden="true"
+       role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="modal-scrim" data-contact-close></div>
+    <section class="dialog-card contact-card">
+      <button class="close-modal" type="button" aria-label="닫기"
+              data-contact-close>×</button>
+      <div class="dialog-content">
+        <span class="dialog-icon">💌</span>
+        <p class="dialog-kicker">WE’D LOVE TO HEAR FROM YOU</p>
+        <h2 id="contactTitle">문의 · 건의하기</h2>
+        <p>Blion식탁에 전하고 싶은 이야기를 적어주세요.</p>
+        <label class="sr-only" for="feedbackText">문의 또는 건의 내용</label>
+        <textarea id="feedbackText" class="feedback-input"
+                  placeholder="메뉴 추가 의견이나 궁금한 점을 적어주세요"></textarea>
+        <button class="dialog-primary" id="sendFeedback" type="button">
+          보내기
+        </button>
+        <p id="feedbackMessage" class="feedback-message" aria-live="polite"></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
