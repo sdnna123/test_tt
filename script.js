@@ -8,12 +8,23 @@ const initialMenus = [
   { name: '크림파스타', image: 'https://awsimages.detik.net.id/community/media/visual/2019/08/22/586abc49-1ac0-418c-b36d-ee99088a1d85.jpeg', emoji: '🍝' }
 ];
 
-let menus = initialMenus.map(menu => ({ ...menu }));
+// localStorage에서 저장된 메뉴 불러오기 (없으면 초기 메뉴 사용)
+const STORAGE_KEY = 'saved_lunch_menus';
+const savedMenus = localStorage.getItem(STORAGE_KEY);
+let menus = savedMenus ? JSON.parse(savedMenus) : initialMenus.map(menu => ({ ...menu }));
+
+// [추가] 최근에 추천된 메뉴 이름들을 최대 3개까지 기억하는 배열
+let recentPicked = [];
 
 const menuList = document.querySelector('#menuList');
 const menuCount = document.querySelector('#menuCount');
 const result = document.querySelector('#pickResult');
 const message = document.querySelector('#formMessage');
+
+// 변경된 메뉴 목록을 브라우저에 저장하는 함수
+function saveMenus() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(menus));
+}
 
 function escapeHtml(value) {
   return value.replace(/[&<>"']/g, char => ({
@@ -78,6 +89,7 @@ document.querySelector('#addMenuForm').addEventListener('submit', event => {
   }
 
   menus.push({ name, emoji: '🍽️' });
+  saveMenus();
   nameInput.value = '';
   message.textContent = `${name} 메뉴를 등록했어요.`;
   message.classList.add('success');
@@ -89,6 +101,7 @@ menuList.addEventListener('click', event => {
 
   if (deleteButton) {
     menus.splice(Number(deleteButton.dataset.delete), 1);
+    saveMenus();
     renderMenus();
     return;
   }
@@ -101,6 +114,12 @@ menuList.addEventListener('click', event => {
 });
 
 function showRecommendation(menu) {
+  // [추가] 최근 추천 목록에 추가하고 최대 3개까지만 유지
+  recentPicked.push(menu.name);
+  if (recentPicked.length > 3) {
+    recentPicked.shift(); // 가장 오래된 기록 제거
+  }
+
   result.innerHTML =
     `<span class="plate-icon">🍴</span><span>${escapeHtml(menu.name)} 어때요?</span>`;
 }
@@ -116,7 +135,12 @@ document.querySelector('#recommendBtn').addEventListener('click', () => {
     '<span class="plate-icon">🍽️</span><span>고르는 중…</span>';
 
   window.setTimeout(() => {
-    const pick = menus[Math.floor(Math.random() * menus.length)];
+    // [추가] 메뉴 개수가 3개 초과일 때만 최근 3개 메뉴를 후보에서 제외 (메뉴가 너무 적으면 제외하지 않음)
+    const candidates = menus.length > 3
+      ? menus.filter(menu => !recentPicked.includes(menu.name))
+      : menus;
+
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
     showRecommendation(pick);
   }, 420);
 });
